@@ -116,5 +116,6 @@
          unit,
          intensity,
          maxnumber,
+         maxcurrentnumber,
          curnumber = 0
         }).

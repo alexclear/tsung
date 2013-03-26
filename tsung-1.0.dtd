@@ -83,7 +83,8 @@
      interarrival NMTOKEN #IMPLIED
      arrivalrate  NMTOKEN #IMPLIED
      unit (hour | minute | second) #REQUIRED
-     maxnumber NMTOKEN #IMPLIED>
+     maxnumber NMTOKEN #IMPLIED
+     maxcurrentnumber NMTOKEN #IMPLIED>
 
 <!ELEMENT user EMPTY>
 <!ATTLIST user

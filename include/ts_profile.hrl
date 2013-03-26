@@ -123,7 +123,9 @@
          phase_nusers,   % total number of users to start in the current phase
          phase_duration, % expected phase duration
          phase_start,    % timestamp
+         phasemaxcurrentnumber,
          start_date,
+         donotlaunch = false,
          short_timeout = ?short_timeout,
          maxusers %% if maxusers are currently active, launch a
                   %% new beam to handle the new users

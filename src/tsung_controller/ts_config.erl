@@ -323,6 +323,8 @@ parse(Element = #xmlElement{name=users, attributes=Attrs},
 
     Max = getAttr(integer,Attrs, maxnumber, infinity),
     ?LOGF("Maximum number of users ~p~n",[Max],?INFO),
+    MaxCurrent = getAttr(integer,Attrs, maxcurrentnumber, infinity),
+    ?LOGF("Maximum number of current users ~p~n",[MaxCurrent],?NOTICE),
 
     Unit  = getAttr(string,Attrs, unit, "second"),
     Intensity = case {getAttr(float_or_integer,Attrs, interarrival),
@@ -337,7 +339,7 @@ parse(Element = #xmlElement{name=users, attributes=Attrs},
                         exit({invalid_xml,"arrivalrate and interarrival can't be defined simultaneously"})
                 end,
     lists:foldl(fun parse/2,
-        Conf#config{arrivalphases = [CurA#arrivalphase{maxnumber = Max,
+        Conf#config{arrivalphases = [CurA#arrivalphase{maxnumber = Max, maxcurrentnumber = MaxCurrent,
                                                         intensity=Intensity}
                                |AList]},
                 Element#xmlElement.content);

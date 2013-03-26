@@ -317,6 +317,7 @@ handle_call({get_client_config, Host}, _From, State=#state{curcfg=OldCfg,total_w
     {value, Client} = lists:keysearch(Host, #client.host, Clients),
     IsLast = OldCfg + 1 >= length(Clients),% test is this is the last launcher to ask for it's config
     Get = fun(Phase,Args)-> {get_client_cfg(Phase,Args),Args} end,
+    ?LOG("Doing mapfoldl~n",?NOTICE),
     {Res, _Acc} = lists:mapfoldl(Get, {Total_Weight,Client,IsLast},Config#config.arrivalphases),
     {NewPhases,ClientParams} = lists:unzip(Res),
     Reply = {ok,{ClientParams,StartDate,Client#client.maxusers}},
@@ -555,6 +556,7 @@ choose_session([#session{popularity=P} | SList], Rand, Cur) ->
 get_client_cfg(Arrival=#arrivalphase{duration = Duration,
                                      intensity= PhaseIntensity,
                                      curnumber= CurNumber,
+                                     maxcurrentnumber= MaxCurrentNumber,
                                      maxnumber= MaxNumber },
                {TotalWeight,Client,IsLast} ) ->
     Weight = Client#client.weight,
@@ -575,7 +577,7 @@ get_client_cfg(Arrival=#arrivalphase{duration = Duration,
                    end),
     ?LOGF("New arrival phase ~p for client ~p (last ? ~p): will start ~p users~n",
           [Arrival#arrivalphase.phase,Client#client.host, IsLast,NUsers],?NOTICE),
-    {Arrival#arrivalphase{curnumber=CurNumber+NUsers}, {ClientIntensity, NUsers, Duration}}.
+    {Arrival#arrivalphase{curnumber=CurNumber+NUsers}, {ClientIntensity, NUsers, Duration, MaxCurrentNumber}}.
 
 %%----------------------------------------------------------------------
 %% Func: encode_filename/1
